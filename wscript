@@ -132,6 +132,9 @@ def options(opt):
     opt.samba_add_onoff_option('smb1-server',
                                dest='with_smb1server',
                                help=("Build smbd with SMB1 support (default=yes)."))
+    opt.add_option('--without-rust',
+             action='store_false', dest='with_rust',
+            help='Build without rust support')
 
 def configure(conf):
     version = samba_version.load_version(env=conf.env)
@@ -436,6 +439,15 @@ def configure(conf):
             conf.env.undefined_ldflags = []
 
     conf.SAMBA_CONFIG_H('include/config.h')
+    Logs.info("Checking for bindgen")
+    if Options.options.with_rust:
+        conf.find_program('bindgen', var="BINDGEN")
+        if conf.env["BINDGEN"]:
+            conf.CHECK_COMMAND('%s --version' % conf.env.BINDGEN[0],
+                               msg='Using bindgen version',
+                               define=None,
+                               on_target=False)
+
 
 def etags(ctx):
     '''build TAGS file using etags'''
