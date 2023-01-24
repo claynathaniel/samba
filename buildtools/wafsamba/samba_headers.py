@@ -170,7 +170,7 @@ def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install
                                 source=h_name,
                                 target=target)
         t.env.RELPATH = relpath2
-        t.env.TOPDIR  = bld.srcnode.abspath()
+        t.env.TOPDIR = bld.srcnode.abspath()
         if not bld.env.public_headers_list:
             bld.env.public_headers_list = []
         bld.env.public_headers_list.append(os.path.join(inst_path, inst_name))
